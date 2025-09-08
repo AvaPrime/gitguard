@@ -294,7 +294,7 @@ jobs:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
 
       - name: Run Trivy filesystem scan
-        uses: aquasecurity/trivy-action@0.24.4
+        uses: aquasecurity/trivy-action@0.33.1
         with:
           scan-type: 'fs'
           ignore-unfixed: true
@@ -303,7 +303,7 @@ jobs:
           severity: 'CRITICAL,HIGH,MEDIUM'
 
       - name: Run Trivy config scan
-        uses: aquasecurity/trivy-action@0.24.4
+        uses: aquasecurity/trivy-action@0.33.1
         with:
           scan-type: 'config'
           format: 'sarif'
