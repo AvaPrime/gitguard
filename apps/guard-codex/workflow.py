@@ -9,6 +9,7 @@ with workflow.unsafe.imports_passed_through():
     from activities import (
         analyze_repo_state,
         extract_event_facts,
+        notify_slack_on_pr_status,
         publish_portal,
         render_docs,
         update_graph,
@@ -62,6 +63,14 @@ class CodexWorkflow:
                 render_docs, facts, analysis, start_to_close_timeout=120
             )
             urls = await workflow.execute_activity(publish_portal, path, start_to_close_timeout=180)
+
+            # Send Slack notification
+            await workflow.execute_activity(
+                notify_slack_on_pr_status,
+                facts,
+                "processed",
+                start_to_close_timeout=60,
+            )
 
             # Branch logic by version when semantics change in the future
             # if v >= 2:

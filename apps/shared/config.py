@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     github_app_id: int | None = None
     github_private_key: str | None = None
     temporal_host: str = Field(default="localhost:7233")
+    slack_webhook_url: str | None = None
 
     class Config:
         env_file = ".env"

@@ -63,3 +63,6 @@ monitoring:
   metrics_port: 8080
   health_port: 8081
   log_level: "info"
+
+slack:
+  webhook_url: "${SLACK_WEBHOOK_URL}" # Get this from your Slack App configuration

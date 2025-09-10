@@ -19,6 +19,8 @@ from psycopg.rows import dict_row
 from slugify import slugify
 from temporalio import activity
 
+from .slack import send_slack_notification
+
 # Constants for magic numbers
 MAX_CHANGED_FILES_DISPLAY = 20
 MAX_POLICIES_DISPLAY = 10
@@ -631,6 +633,31 @@ async def publish_portal(path: str) -> dict[str, str]:
     )
     record_docs_generation("portal_publish")
     return {"site_dir": str(site)}
+
+
+@activity.defn
+@metrics_activity
+async def notify_slack_on_pr_status(facts: dict[str, Any], status: str) -> None:
+    """Sends a Slack notification about a PR status change."""
+    if facts.get("kind") != "PR":
+        return  # Only send notifications for PRs
+
+    pr_number = facts.get("number")
+    if not pr_number:
+        return
+
+    # Construct PR URL
+    gh_web_base = os.getenv("GITHUB_WEB_BASE", "")
+    pr_url = f"{gh_web_base}/pull/{pr_number}" if gh_web_base else ""
+
+    send_slack_notification(
+        pr_url=pr_url,
+        pr_title=facts.get("title", ""),
+        pr_number=pr_number,
+        status=status,
+        author=facts.get("author", "unknown"),
+        changed_files=facts.get("changed_paths", []),
+    )
 
 
 @activity.defn
