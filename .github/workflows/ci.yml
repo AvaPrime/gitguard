@@ -333,7 +333,7 @@ jobs:
           pip-licenses --fail-on='GPL.*' --packages $(pip freeze | grep -v '\-e' | cut -d'=' -f1)
 
       - name: Upload security results
-        uses: github/codeql-action/upload-sarif@4dd16135b69a43b6c8efb853346f8437d92d3c93 # v3.26.6
+        uses: github/codeql-action/upload-sarif@3599b3baa15b485a2e49ef411a7a4bb2452e7f93 # v3.30.5
         with:
           sarif_file: |
             trivy-fs-results.sarif
