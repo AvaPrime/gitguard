@@ -1,4 +1,4 @@
-FROM python:3.13-slim
+FROM python:3.14-slim
 
 # Security: Create non-root user first
 RUN groupadd --gid 1000 gitguard && \
